@@ -436,7 +436,7 @@ func formatAnkiTags(tags []string) string {
 	return " " + joined + " "
 }
 
-func (d *Database) AddCard(noteID, deckID int64, templateOrd int) (*Database, error) {
+func (d *Database) AddCard(noteID, deckID, due int64, templateOrd int) (*Database, error) {
 	now := time.Now().Unix()
 	_, err := d.db.Exec(`
 		INSERT INTO cards (id, nid, did, ord, mod, usn, type, queue, due, ivl, factor, reps, lapses, left, odue, odid, flags, data)
@@ -450,7 +450,7 @@ func (d *Database) AddCard(noteID, deckID int64, templateOrd int) (*Database, er
 		-1,
 		0,    // new card
 		0,    // new queue
-		0,    // due today
+		due,  // due today
 		0,    // initial interval
 		2500, // initial factor
 		0,    // no reps yet
